@@ -1,0 +1,41 @@
+{% set name = "oncokb-annotator" %}
+{% set version = "3.4.1.9000" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/umccr/oncokb-annotator/archive/v{{ version }}.tar.gz
+  sha256: 8f9f143fd0fbc6de099d0f65b9a5da5ec1751ba874bb365285aa08433ad59f50
+
+build:
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
+
+requirements:
+  host:
+    - python
+    - setuptools >=61.0
+    - pip
+  run:
+    - python
+    - requests
+    - urllib3
+
+test:
+  commands:
+    - pip check
+    - MafAnnotator.py -h
+  requires:
+    - pip
+
+about:
+  summary: Annotates variants in MAF with OncoKB annotation.
+  license: AGPL-3.0-only
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - pdiakumis
